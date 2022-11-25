@@ -1,0 +1,54 @@
+.header-container {
+  display: flex;
+  width: 100vw;
+  height: 5vmin;
+  box-sizing: border-box;
+
+  .brand {
+    flex: 2;
+    height: 100%;
+    line-height: 5vmin;
+    text-align: center;
+    background-color: antiquewhite;
+    font-size: 3vmin;
+    background: linear-gradient(to right, #b92b27, #1565c0);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .head-bar {
+    flex: 18;
+    height: 100%;
+    background-color: aqua;
+  }
+}
+
+.body-container {
+  display: flex;
+  height: calc(100vh - 5vmin);
+  box-sizing: border-box;
+
+  .left-container {
+    flex: 2;
+    background-color: pink;
+    height: 100%;
+  }
+
+  .main-container {
+    flex: 18;
+    // background-color: purple;
+    height: 100%;
+    // padding: 1vmin;
+
+    textarea {
+      width: 90%;
+      height: 90%;
+      padding: .5vmin;
+      resize: none;
+      outline: none;
+      border: 0;
+      box-shadow: 0 0 .1vmin .1vmin rgba(0, 0, 0, .2);
+      font-size: 2vmin;
+    }
+  }
+}
