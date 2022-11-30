@@ -9,12 +9,25 @@ function App() {
   const [isWorking, setIsWorking] = useState(false)
   const [messageApi, contextHolder] = message.useMessage()
   const joinFormRef = useRef()
+  const textareaRef = useRef()
+  const text = []
+  let startPos, endPos
+
+  // useEffect(() => {
+  //   // 初始化做的事
+  //   // setInterval(() => {
+  //   //   console.log(textareaRef.current.selectionStart)
+  //   //   console.log(textareaRef.current.selectionEnd)
+  //   // }, 1000)
+  // }, [])
+
   const launchCol = (e) => {
     setIsWorking(true)
     //  请求后端获得协作码
     const code = '02026'
     messageApi.info(`您的协作码是 ${code}`)
     e.target.innerHTML = '协作中 02026'
+    joinFormRef.current.style.display = 'none'
     // 发送消息提示
     // 通知后端
   }
@@ -28,12 +41,63 @@ function App() {
   }
 
   const copyAll = () => {
-
+    joinFormRef.current.style.display = 'none'
   }
 
   const submitCode = () => {
     // 发送后端比对
     console.log('click')
+  }
+
+  const handleInput = (e) => {
+    console.log(e)
+    const data = e.nativeEvent.data
+    // const start = textareaRef.current.selectionStart
+    // const end = textareaRef.current.selectionEnd
+    const start = startPos
+    const end = endPos
+    switch (e.nativeEvent.inputType) {
+      case 'insertText':
+        text.splice(start + 1, 0, data)
+        // console.log(text.join(''))
+        break
+      case 'deleteContentBackward':
+        console.log(start, startPos)
+        console.log(end, endPos)
+        if (start === end) {
+          text.splice(start - 1, 1)
+        } else if (end > start) {
+          text.splice(start, end - start)
+        }
+        // console.log(text.join(''))
+        break
+      case 'deleteContentForward':
+        console.log(start)
+        text.splice(start, 1)
+        break
+
+    }
+    console.log(text.join(''))
+  }
+
+  const trackKey = (e) => {
+    startPos = textareaRef.current.selectionStart
+    endPos = textareaRef.current.selectionEnd
+    console.log(startPos)
+    console.log(endPos)
+  }
+
+  const trackMouse = (e) => {
+    startPos = textareaRef.current.selectionStart
+    endPos = textareaRef.current.selectionEnd
+    console.log(startPos)
+    console.log(endPos)
+  }
+
+  const trackPaste = (e) => {
+    const clipboardData = e.clipboardData
+    const boardData = clipboardData.getData('text')
+    text.splice(startPos, 0, boardData)
   }
 
   return (
@@ -68,11 +132,21 @@ function App() {
           </ul>
         </div>
         <div className="main-container">
-          <textarea></textarea>
+          <textarea ref={textareaRef}
+            onInput={handleInput}
+            onKeyDown={trackKey}
+            onMouseUp={trackMouse}
+            onPaste={trackPaste}
+          ></textarea>
           <div className="join-form" ref={joinFormRef}>
             <Input placeholder="请输入协作码" />
             <Button onClick={submitCode}>提交</Button>
           </div>
+          {/* <div className="dev-show" style={{ position: 'absolute', top: '20px', right: '20px' }}>
+            {
+              '这是' + text.join('-')
+            }
+          </div> */}
         </div>
       </div>
     </>
