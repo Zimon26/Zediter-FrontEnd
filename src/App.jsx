@@ -5,7 +5,7 @@ import './App.less'
 
 function App() {
   const [username, setUsername] = useState('Zimon')
-  const [collaborators, setCollaborators] = useState(['Zimon, Zeb'])
+  const [collaborators, setCollaborators] = useState(['Zimon, Luo'])
   const [isWorking, setIsWorking] = useState(false)
   const [messageApi, contextHolder] = message.useMessage()
   const joinFormRef = useRef()
