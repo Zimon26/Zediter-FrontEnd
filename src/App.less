@@ -81,14 +81,15 @@
     .join-form {
       display: none;
       position: absolute;
-      top: 6vmin;
+      top: 6vh;
       left: 1vw;
-      padding: 1vmin;
-      width: 29vw;
+      padding: 1vw;
+      width: 30vw;
+      height: 6vmin;
+      line-height: calc(6vmin - 2vw - 2px);
       border: 1px solid #cccccc;
       border-radius: .5vmin;
       box-shadow: 0 0 2px 1px rgba(0, 0, 0, .2);
-      height: 6vmin;
 
       // background-color: #1565c0;
       input {
@@ -101,4 +102,31 @@
       }
     }
   }
+}
+
+.username {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30vw;
+  height: 6vmin;
+  line-height: calc(6vmin - 2vw - 2px);
+  padding: 1vw;
+  border: 1px solid #cccccc;
+  border-radius: .5vmin;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, .2);
+
+  input {
+    width: 20vw;
+  }
+
+  button {
+    margin-left: 1vw;
+    width: 6vw;
+  }
+}
+
+.hide {
+  display: none;
 }

@@ -6,28 +6,35 @@ import './App.less'
 
 function App() {
   const [username, setUsername] = useState('Zimon')
+  const [usernameDone, setUsernameDone] = useState(false)
   const [collaborators, setCollaborators] = useState(['Zimon, Luo'])
   const [isWorking, setIsWorking] = useState(false)
-  const [thisArrayID, setThisArrayID] = useState(0)
+  const [thisArrayID, setThisArrayID] = useState(-1)
   const [messageApi, contextHolder] = message.useMessage()
   const joinFormRef = useRef()
   const textareaRef = useRef()
   const joinColInputRef = useRef()
+  const usernameInputRef = useRef()
   let text = []
   let startPos, endPos
 
   useEffect(() => {
     // 初始化做的事
-    // setInterval(() => {
-    //   text.push('m')
-    // }, 1000)
-    // async function initID() {
-    //   const { data: res } = await axios.get('http://localhost:8888/init')
-    //   console.log(res)
-    //   thisID = res
-    // }
-    // initID()
-    return () => { }
+    const timerUpdate = setInterval(async () => {
+      const { data: { text, number } } = await axios.get('http://localhost:8888/handle-update', {
+        params: {
+          arrayID: thisArrayID
+        }
+      })
+      if (number === 1) {
+        textareaRef.current.value = text.join('')
+        textareaRef.current.focus()
+      }
+      console.log('checkUpdate')
+    }, 1000)
+    return () => {
+      clearInterval(timerUpdate)
+    }
   }, [])
 
   const launchCol = async (e) => {
@@ -80,8 +87,11 @@ function App() {
     } else {
       messageApi.info('协作码为五位数字，请重新输入')
     }
+  }
 
-
+  const submitUsername = () => {
+    setUsername(usernameInputRef.current.input.value)
+    setUsernameDone(true)
   }
 
   const handleInput = async (e) => {
@@ -188,8 +198,8 @@ function App() {
             onPaste={trackPaste}
           ></textarea>
           <div className="join-form" ref={joinFormRef}>
-            <Input ref={joinColInputRef} placeholder="请输入协作码" />
-            <Button onClick={submitCode}>提交</Button>
+            <Input ref={joinColInputRef} placeholder="请输入五位数字协作码" />
+            <Button onClick={submitCode}>确认</Button>
           </div>
           {/* <div className="dev-show" style={{ position: 'absolute', top: '20px', right: '20px' }}>
             {
@@ -197,6 +207,10 @@ function App() {
             }
           </div> */}
         </div>
+      </div>
+      <div className={usernameDone ? 'username hide' : 'username'}>
+        <Input ref={usernameInputRef} placeholder="请输入您的协作用户名" />
+        <Button onClick={submitUsername}>确认</Button>
       </div>
     </>
   )
